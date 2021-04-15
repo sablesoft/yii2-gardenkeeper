@@ -49,6 +49,20 @@ class m210415_144610_create_product_table extends Migration
             'product', 'plant_id',
             'plant', 'id'
         );
+
+        $this->createIndex('idx-product-ovary_season_id', 'product',  'ovary_season_id');
+        $this->addForeignKey(
+            'fk-product-ovary_season_id',
+            'product', 'ovary_season_id',
+            'season', 'id'
+        );
+
+        $this->createIndex('idx-product-ripening_season_id', 'product',  'ripening_season_id');
+        $this->addForeignKey(
+            'fk-product-ripening_season_id',
+            'product', 'ripening_season_id',
+            'season', 'id'
+        );
     }
 
     /**
@@ -57,7 +71,11 @@ class m210415_144610_create_product_table extends Migration
     public function safeDown()
     {
         $this->dropForeignKey('fk-product-plant_id', 'product');
+        $this->dropForeignKey('fk-product-ovary_season_id', 'product');
+        $this->dropForeignKey('fk-product-ripening_season_id', 'product');
         $this->dropIndex('idx-product-plant_id', 'product');
+        $this->dropIndex('idx-product-ovary_season_id', 'product');
+        $this->dropIndex('idx-product-ripening_season_id', 'product');
         $this->dropTable('{{%product}}');
     }
 }
