@@ -16,15 +16,14 @@ class Nav extends \yii\bootstrap\Nav {
      * @return array
      */
     public static function menuItems() : array {
-        $menuItems = [];
+        $rawItems = Yii::$app->params['nav'];
+        $menuItems = static::prepareItems( (array) $rawItems );
+        $menuItems = $menuItems['items'];
 
         if (Yii::$app->user->isGuest) {
             $menuItems[] = ['label' => Yii::t('app', 'Signup'), 'url' => ['/signup']];
             $menuItems[] = ['label' => Yii::t('app', 'Login'), 'url' => ['/login']];
         } else {
-            $rawItems = Yii::$app->params['nav'];
-            $menuItems = static::prepareItems( (array) $rawItems );
-            $menuItems = $menuItems['items'];
             $menuItems[] = '<li>'
                 . Html::beginForm(['/logout'], 'post')
                 . Html::submitButton(
@@ -41,8 +40,12 @@ class Nav extends \yii\bootstrap\Nav {
         return $menuItems;
     }
 
-
-    protected static function prepareItems( $config, $oldKey = null ) {
+    /**
+     * @param $config
+     * @param null $oldKey
+     * @return array|mixed
+     */
+    protected static function prepareItems($config, $oldKey = null) {
         $items = [];
         foreach( (array) $config as $key => $subConfig ) {
             if( $key === '_menu' ) {
@@ -56,8 +59,8 @@ class Nav extends \yii\bootstrap\Nav {
                 $items['items'][] = "<li class='divider'></li>";
                 continue;
             }
-//            if( !static::checkAccess( $subConfig, $key, $oldKey ) )
-//                continue;
+            if( !static::checkAccess( $subConfig, $key, $oldKey ) )
+                continue;
             $items['items'][] = static::prepareItems( $subConfig, trim( "$oldKey.$key", '.' ) );
         }
 
@@ -73,7 +76,12 @@ class Nav extends \yii\bootstrap\Nav {
     protected static function checkAccess( array &$config, string $key, $oldKey = null ) {
         $default = $oldKey ?  "$oldKey.$key" : "menu.$key";
         $permission = ArrayHelper::remove( $config, '_access', $default );
+        if (Yii::$app->user->isGuest && $permission != '?') {
+            return false;
+        }
 
-        return Yii::$app->user->can( $permission );
+        return true;
+
+//        return Yii::$app->user->can( $permission );
     }
 }

@@ -1,17 +1,22 @@
 <?php
 
 /* @var $this yii\web\View */
+/* @var $now \common\models\History */
 
-$this->title = 'My Yii Application';
+use yii\helpers\Html;
+
+$this->title = Yii::$app->name;
 ?>
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>Congratulations!</h1>
+        <h1>Welcome!</h1>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+        <p class="lead">Garden Keeper v0.1</p>
 
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+        <p class="h1">Now is <?= $now->year; ?>-th year, <?= $now->season->name; ?></p>
+
+        <p><?= Html::a('Go to next Season', ['site/wait'], ['class' => 'btn btn-lg btn-success']); ?></p>
     </div>
 
     <div class="body-content">

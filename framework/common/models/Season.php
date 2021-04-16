@@ -74,6 +74,15 @@ class Season extends \yii\db\ActiveRecord implements ColumnsInterface
         ];
     }
 
+    /**
+     * @return $this
+     */
+    public function getNextSeason(): self
+    {
+        $next = self::find()->where(['>', 'order', $this->order])
+            ->orderBy(['order' => SORT_ASC])->one();
+        return $next ?: self::find()->orderBy(['order' => SORT_ASC])->one();
+    }
 
     /**
      * Gets query for [[Climates]].

@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\History;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -74,7 +75,22 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        return $this->render('index', ['now' => History::findNow()]);
+    }
+
+    /**
+     * @return \yii\web\Response
+     */
+    public function actionWait()
+    {
+        $now = History::findNow();
+        $next = $now->next;
+
+        // todo - apply season actions
+
+        $next->save();
+
+        return $this->redirect('index');
     }
 
     /**
