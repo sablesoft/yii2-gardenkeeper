@@ -1,11 +1,14 @@
 <?php
 namespace common\models;
 
+use common\models\interfaces\ColumnsInterface;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use common\models\traits\DropDownTrait;
 
 /**
  * User model
@@ -21,9 +24,13 @@ use yii\web\IdentityInterface;
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
+ * @property-read array $statusMap
+ * @property-read string $statusLabel
  */
-class User extends ActiveRecord implements IdentityInterface
+class User extends ActiveRecord implements IdentityInterface, ColumnsInterface
 {
+    use DropDownTrait;
+
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
@@ -45,6 +52,32 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             TimestampBehavior::className(),
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getStatusMap(): array
+    {
+        return [
+            self::STATUS_DELETED => Yii::t('app', 'Deleted'),
+            self::STATUS_INACTIVE => Yii::t('app', 'Inactive'),
+            self::STATUS_ACTIVE => Yii::t('app', 'Active')
+        ];
+    }
+
+    /**
+     * @return string
+     * @throws InvalidConfigException
+     */
+    public function getStatusLabel(): string
+    {
+        $map = $this->statusMap;
+        if (!array_key_exists($this->status, $map)) {
+            throw new InvalidConfigException('Invalid user status');
+        }
+
+        return $map[$this->status];
     }
 
     /**
@@ -208,5 +241,40 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => Yii::t('app', 'ID'),
+            'username' => Yii::t('app', 'Username'),
+            'email' => Yii::t('app', 'Email'),
+            'status' => Yii::t('app', 'Status'),
+            'statusLabel' => Yii::t('app', 'Status'),
+            'created_at' => Yii::t('app', 'Created At'),
+            'updated_at' => Yii::t('app', 'Updated At'),
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getColumns(): array
+    {
+        return [
+//            'id',
+            'username',
+//            'auth_key',
+//            'password_hash',
+//            'password_reset_token',
+            'email:email',
+            'statusLabel',
+            'created_at',
+            'updated_at',
+//            'verification_token',
+        ];
     }
 }

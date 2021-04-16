@@ -25,11 +25,6 @@ class m210415_110000_create_season_table extends Migration
                 ->append('ON UPDATE CURRENT_TIMESTAMP')
                 ->comment('Last update time')
         ]);
-
-        $this->insert('season', ['name' => 'Spring', 'order' => 1]);
-        $this->insert('season', ['name' => 'Summer', 'order' => 2]);
-        $this->insert('season', ['name' => 'Autumn', 'order' => 3]);
-        $this->insert('season', ['name' => 'Winter', 'order' => 4]);
     }
 
     /**
