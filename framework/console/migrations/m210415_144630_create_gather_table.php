@@ -15,8 +15,9 @@ class m210415_144630_create_gather_table extends Migration
         $this->createTable('{{%gather}}', [
             'id' => $this->primaryKey(),
 
-            // ключи по участкам и типам продуктов - для удобства:
+            // ключ по участкам - для удобства:
             'land_id' => $this->integer()->notNull()->comment('Land ID'),
+
             'product_id' => $this->integer()->notNull()->comment('Product ID'),
 
             // ключ растения на участке:
@@ -27,14 +28,15 @@ class m210415_144630_create_gather_table extends Migration
             'is_harvested' => $this->boolean()->notNull()->defaultValue(false)->comment('Is product harvested'),
 
             // спелость продукта, проценты:
-            'ripeness' => $this->integer()->unsigned()->notNull()->comment('Plant product ripeness'),
+            'ripeness' => $this->integer()->unsigned()->notNull()->defaultValue(0)->comment('Plant product ripeness'),
 
             // здоровье данного продукта, проценты:
-            'health' => $this->integer()->unsigned()->notNull()->defaultValue(100)->comment('Plant product health'),
+            'health' => $this->integer()->unsigned()->notNull()->defaultValue(100)->defaultValue(100)->comment('Plant product health'),
 
             'created_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP')
                 ->comment('Creation time'),
             'updated_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP')
+                ->append('ON UPDATE CURRENT_TIMESTAMP')
                 ->comment('Last update time')
         ]);
 

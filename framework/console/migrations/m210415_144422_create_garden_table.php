@@ -18,7 +18,7 @@ class m210415_144422_create_garden_table extends Migration
             'plant_id' => $this->integer()->notNull()->comment('Plant ID'),
 
             // возраст данного растения в саду:
-            'age' => $this->integer()->unsigned()->notNull()->comment('Garden plant age'),
+            'age' => $this->integer()->unsigned()->notNull()->defaultValue(0)->comment('Garden plant age'),
 
             // плодовитость данного растения в саду
             // (дополнительный коэффициент к количеству продуктов с растения):
@@ -32,6 +32,7 @@ class m210415_144422_create_garden_table extends Migration
             'created_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP')
                 ->comment('Creation time'),
             'updated_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP')
+                ->append('ON UPDATE CURRENT_TIMESTAMP')
                 ->comment('Last update time')
         ]);
 

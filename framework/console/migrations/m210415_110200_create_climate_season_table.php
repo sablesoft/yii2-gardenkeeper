@@ -32,11 +32,16 @@ class m210415_110200_create_climate_season_table extends Migration
             'created_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP')
                 ->comment('Creation time'),
             'updated_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP')
+                ->append('ON UPDATE CURRENT_TIMESTAMP')
                 ->comment('Last update time')
         ]);
 
         $this->createIndex( 'idx-climate_season-climate_id', 'climate_season',  'climate_id' );
         $this->createIndex( 'idx-climate_season-season_id', 'climate_season',  'season_id' );
+        $this->createIndex(
+            "idx-unique-climate-season", 'climate_season',
+            ['climate_id', 'season_id'], true
+        );
         $this->addForeignKey(
             'fk-climate_season-climate_id',
             'climate_season', 'climate_id',
@@ -56,8 +61,9 @@ class m210415_110200_create_climate_season_table extends Migration
     {
         $this->dropForeignKey('fk-climate_season-climate_id', 'climate_season');
         $this->dropForeignKey('fk-climate_season-season_id', 'climate_season');
-        $this->dropIndex('idx-climate_season-climate_id', 'climate_season');
         $this->dropIndex('idx-climate_season-season_id', 'climate_season');
+        $this->dropIndex('idx-climate_season-climate_id', 'climate_season');
+        $this->dropIndex('idx-unique-climate-season', 'climate_season');
         $this->dropTable('{{%climate_season}}');
     }
 }

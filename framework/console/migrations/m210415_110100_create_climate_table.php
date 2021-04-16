@@ -16,11 +16,12 @@ class m210415_110100_create_climate_table extends Migration
             'id' => $this->primaryKey(),
 
             // название климатической зоны:
-            'name' => $this->string(),
+            'name' => $this->string()->notNull()->unique(),
 
             'created_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP')
                 ->comment('Creation time'),
             'updated_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP')
+                ->append('ON UPDATE CURRENT_TIMESTAMP')
                 ->comment('Last update time')
         ]);
 

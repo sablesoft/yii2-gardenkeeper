@@ -16,7 +16,7 @@ class m210415_144412_create_plant_table extends Migration
             'id' => $this->primaryKey(),
 
             // название растения:
-            'name' => $this->string()->notNull(),
+            'name' => $this->string()->notNull()->unique(),
 
             // средний срок жизни растения в годах:
             'lifespan' => $this->integer()->unsigned()->notNull()->comment('Medium life span (years)'),
@@ -36,6 +36,7 @@ class m210415_144412_create_plant_table extends Migration
             'created_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP')
                 ->comment('Creation time'),
             'updated_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP')
+                ->append('ON UPDATE CURRENT_TIMESTAMP')
                 ->comment('Last update time')
         ]);
     }

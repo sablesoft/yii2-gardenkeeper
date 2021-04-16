@@ -16,12 +16,12 @@ class m210415_144610_create_product_table extends Migration
             'id' => $this->primaryKey(),
             'plant_id' => $this->integer()->notNull()->comment('Plant ID'),
 
-            'name' => $this->string()->comment('Plant product name'),
+            'name' => $this->string()->notNull()->unique()->comment('Plant product name'),
 
             // сезон завязи и сезон созревания
             // (в данной модели предусмотрено созревание продукта лишь раз в году):
-            'ovary_season_id' => $this->integer()->notNull()->comment('Product ovary season ID'),
-            'ripening_season_id' => $this->integer()->notNull()->comment('Product ripening season ID'),
+            'ovary_season_id' => $this->integer()->comment('Product ovary season ID'),
+            'ripening_season_id' => $this->integer()->comment('Product ripening season ID'),
 
             // средний возраст растения, в котором оно начинает давать этот продукт
             // (одно растение может давать различные продукты в разном своем возрасте, если не указано - всегда):
@@ -40,6 +40,7 @@ class m210415_144610_create_product_table extends Migration
             'created_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP')
                 ->comment('Creation time'),
             'updated_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP')
+                ->append('ON UPDATE CURRENT_TIMESTAMP')
                 ->comment('Last update time')
         ]);
 

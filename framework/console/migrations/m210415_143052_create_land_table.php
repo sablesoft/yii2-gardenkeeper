@@ -14,20 +14,23 @@ class m210415_143052_create_land_table extends Migration
     {
         $this->createTable('{{%land}}', [
             'id' => $this->primaryKey(),
+            // название участка:
+            'name' => $this->string()->notNull()->unique(),
             // владелец участка:
             'user_id' => $this->integer()->notNull()->comment('Owner ID'),
             // климатические условия:
             'climate_id' => $this->integer()->notNull()->comment('Climate ID'),
 
             // размеры участка - условное количество клеток в ширину и длину:
-            'width' => $this->integer()->unsigned()->notNull()->comment('Land width'),
-            'length' => $this->integer()->unsigned()->notNull()->comment('Land length'),
+            'width' => $this->integer()->unsigned()->notNull()->defaultValue(10)->comment('Land width'),
+            'length' => $this->integer()->unsigned()->notNull()->defaultValue(10)->comment('Land length'),
             // рейтинг сада у пользователей :)
             'rating' => $this->integer(2)->unsigned(),
 
             'created_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP')
                 ->comment('Creation time'),
             'updated_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP')
+                ->append('ON UPDATE CURRENT_TIMESTAMP')
                 ->comment('Last update time')
         ]);
 
