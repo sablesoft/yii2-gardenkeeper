@@ -10,6 +10,7 @@ use yii\widgets\Pjax;
 $this->title = Yii::t('app', 'Stock Products');
 $this->params['breadcrumbs'][] = $this->title;
 $columns = $searchModel->columns;
+unset($columns[2]);
 $columns[] = [
     'class' => 'yii\grid\ActionColumn',
     'template' => '{use}',

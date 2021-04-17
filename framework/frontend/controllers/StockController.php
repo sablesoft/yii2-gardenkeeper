@@ -38,7 +38,7 @@ class StockController extends \yii\web\Controller
     {
         $searchModel = new GatherSearch();
         $searchModel->is_harvested = 1;
-        $dataProvider = $searchModel->search([]);
+        $dataProvider = $searchModel->search(\Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -55,6 +55,10 @@ class StockController extends \yii\web\Controller
     public function actionUse($id)
     {
         if ($model = Gather::findOne($id)) {
+            if (!$model->land->user_id != \Yii::$app->user->id) {
+                \Yii::$app->session->addFlash('error', "It's not your stock!");
+                return $this->redirect('index');
+            }
             $now = History::findNow();
             $now->updateCounters(['used' => 1, 'used_value' => $model->value]);
             $model->delete();

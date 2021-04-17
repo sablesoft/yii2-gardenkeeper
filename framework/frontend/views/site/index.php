@@ -16,6 +16,7 @@ $this->title = Yii::$app->name;
         <p class="h1">Now is <?= $now->season->name; ?>, <?= $now->year; ?>-th year</p>
         <?php if (!Yii::$app->user->isGuest): ?>
         <p><?= Html::a('Go to next Season', ['/site/wait'], ['class' => 'btn btn-lg btn-success']); ?></p>
+        <p><?= Html::a('Reset History', ['/site/reset'], ['class' => 'btn']); ?></p>
         <?php else: ?>
         <p><?= Html::a('Login', ['/login'], ['class' => 'btn btn-lg btn-success']); ?></p>
         <?php endif; ?>

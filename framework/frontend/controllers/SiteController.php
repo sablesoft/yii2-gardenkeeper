@@ -28,8 +28,8 @@ class SiteController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'class' => AccessControl::class,
+                'only' => ['logout', 'signup', 'wait'],
                 'rules' => [
                     [
                         'actions' => ['signup'],
@@ -37,7 +37,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'wait'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -80,15 +80,34 @@ class SiteController extends Controller
 
     /**
      * @return \yii\web\Response
+     * @throws \Throwable
      */
     public function actionWait()
     {
-        $now = History::findNow();
-        $next = $now->next;
+        History::wait();
 
-        // todo - apply season actions
+        return $this->redirect('index');
+    }
 
-        $next->save();
+    /**
+     * @return \yii\web\Response
+     * @throws \Throwable
+     */
+    public function actionReset()
+    {
+        $oldApp = \Yii::$app;
+        new \yii\console\Application([
+                'id' => 'Command runner',
+                'basePath' => '@console',
+                'components' => [
+                    'db' => $oldApp->db,
+                ]
+            ]);
+        \Yii::$app->runAction('fixture', [
+            '*',
+            'interactive' => false,
+            'namespace' => 'common\fixtures']);
+        \Yii::$app = $oldApp;
 
         return $this->redirect('index');
     }
