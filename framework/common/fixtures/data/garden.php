@@ -35,5 +35,26 @@ return [
         'age' => 10,
         'fertility' => 30,
         'health' => 70,
+    ],
+    'demo-watermelon-plant-1' => [
+        'land_id' => 1,
+        'plant_id' => 2,
+        'age' => 0,
+        'fertility' => 30,
+        'health' => 100,
+    ],
+    'demo-watermelon-plant-2' => [
+        'land_id' => 1,
+        'plant_id' => 2,
+        'age' => 0,
+        'fertility' => 10,
+        'health' => 80,
+    ],
+    'demo-watermelon-plant-3' => [
+        'land_id' => 1,
+        'plant_id' => 2,
+        'age' => 0,
+        'fertility' => 10,
+        'health' => 60,
     ]
 ];
