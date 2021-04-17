@@ -5,7 +5,7 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "climate_season".
+ * This is the model class for table "weather".
  *
  * @property int $id
  * @property int $climate_id Climate ID
@@ -25,14 +25,14 @@ use Yii;
  * @property-read string|null $seasonLabel
  * @property-read array $columns
  */
-class ClimateSeason extends \yii\db\ActiveRecord
+class Weather extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'climate_season';
+        return 'weather';
     }
 
     /**
@@ -137,10 +137,10 @@ class ClimateSeason extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return \common\models\query\ClimateSeasonQuery the active query used by this AR class.
+     * @return \common\models\query\WeatherQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \common\models\query\ClimateSeasonQuery(get_called_class());
+        return new \common\models\query\WeatherQuery(get_called_class());
     }
 }

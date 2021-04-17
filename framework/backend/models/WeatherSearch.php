@@ -4,14 +4,14 @@ namespace backend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\ClimateSeason;
+use common\models\Weather;
 use common\models\Climate;
 use common\models\Season;
 
 /**
- * ClimateSeasonSearch represents the model behind the search form of `common\models\ClimateSeason`.
+ * WeatherSearch represents the model behind the search form of `common\models\Weather`.
  */
-class ClimateSeasonSearch extends ClimateSeason
+class WeatherSearch extends Weather
 {
     /**
      * {@inheritdoc}
@@ -45,7 +45,7 @@ class ClimateSeasonSearch extends ClimateSeason
             [
                 'attribute' => 'climate_id',
                 'value' => function ($model) {
-                    /** @var ClimateSeasonSearch $model */
+                    /** @var WeatherSearch $model */
                     return $model->climateLabel;
                 },
                 'filter' => Climate::getDropDownList()[0]
@@ -53,7 +53,7 @@ class ClimateSeasonSearch extends ClimateSeason
             [
                 'attribute' => 'season_id',
                 'value' => function ($model) {
-                    /** @var ClimateSeasonSearch $model */
+                    /** @var WeatherSearch $model */
                     return $model->seasonLabel;
                 },
                 'filter' => Season::getDropDownList()[0]
@@ -88,7 +88,7 @@ class ClimateSeasonSearch extends ClimateSeason
      */
     public function search($params)
     {
-        $query = ClimateSeason::find();
+        $query = Weather::find();
 
         // add conditions that should always apply here
 

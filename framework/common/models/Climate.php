@@ -14,7 +14,7 @@ use common\models\interfaces\ColumnsInterface;
  * @property string $created_at Creation time
  * @property string $updated_at Last update time
  *
- * @property ClimateSeason[] $climateSeasons
+ * @property Weather[] $weathers
  * @property Land[] $lands
  */
 class Climate extends \yii\db\ActiveRecord implements ColumnsInterface
@@ -68,13 +68,13 @@ class Climate extends \yii\db\ActiveRecord implements ColumnsInterface
     }
 
     /**
-     * Gets query for [[ClimateSeasons]].
+     * Gets query for [[Weathers]].
      *
-     * @return \yii\db\ActiveQuery|\common\models\query\ClimateSeasonQuery
+     * @return \yii\db\ActiveQuery|\common\models\query\WeatherQuery
      */
-    public function getClimateSeasons()
+    public function getWeathers()
     {
-        return $this->hasMany(ClimateSeason::className(), ['climate_id' => 'id']);
+        return $this->hasMany(Weather::className(), ['climate_id' => 'id']);
     }
 
     /**

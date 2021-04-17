@@ -3,16 +3,16 @@
 use yii\db\Migration;
 
 /**
- * Handles the creation of table `{{%climate_season}}`.
+ * Handles the creation of table `{{%weather}}`.
  */
-class m210415_110200_create_climate_season_table extends Migration
+class m210415_110200_create_weather_table extends Migration
 {
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-        $this->createTable('{{%climate_season}}', [
+        $this->createTable('{{%weather}}', [
             'id' => $this->primaryKey(),
             'climate_id' => $this->integer()->notNull()->comment('Climate ID'),
             'season_id' => $this->integer()->notNull()->comment('Season ID'),
@@ -36,20 +36,20 @@ class m210415_110200_create_climate_season_table extends Migration
                 ->comment('Last update time')
         ]);
 
-        $this->createIndex( 'idx-climate_season-climate_id', 'climate_season',  'climate_id' );
-        $this->createIndex( 'idx-climate_season-season_id', 'climate_season',  'season_id' );
+        $this->createIndex( 'idx-weather-climate_id', 'weather',  'climate_id' );
+        $this->createIndex( 'idx-weather-season_id', 'weather',  'season_id' );
         $this->createIndex(
-            "idx-unique-climate-season", 'climate_season',
+            "idx-unique-weather", 'weather',
             ['climate_id', 'season_id'], true
         );
         $this->addForeignKey(
-            'fk-climate_season-climate_id',
-            'climate_season', 'climate_id',
+            'fk-weather-climate_id',
+            'weather', 'climate_id',
             'climate', 'id'
         );
         $this->addForeignKey(
-            'fk-climate_season-season_id',
-            'climate_season', 'season_id',
+            'fk-weather-season_id',
+            'weather', 'season_id',
             'season', 'id'
         );
     }
@@ -59,11 +59,11 @@ class m210415_110200_create_climate_season_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropForeignKey('fk-climate_season-climate_id', 'climate_season');
-        $this->dropForeignKey('fk-climate_season-season_id', 'climate_season');
-        $this->dropIndex('idx-climate_season-season_id', 'climate_season');
-        $this->dropIndex('idx-climate_season-climate_id', 'climate_season');
-        $this->dropIndex('idx-unique-climate-season', 'climate_season');
-        $this->dropTable('{{%climate_season}}');
+        $this->dropForeignKey('fk-weather-climate_id', 'weather');
+        $this->dropForeignKey('fk-weather-season_id', 'weather');
+        $this->dropIndex('idx-weather-season_id', 'weather');
+        $this->dropIndex('idx-weather-climate_id', 'weather');
+        $this->dropIndex('idx-unique-weather', 'weather');
+        $this->dropTable('{{%weather}}');
     }
 }

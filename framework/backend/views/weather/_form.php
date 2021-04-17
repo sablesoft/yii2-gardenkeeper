@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\ClimateSeason */
+/* @var $model common\models\Weather */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="climate-season-form">
+<div class="weather-form">
 
     <?php $form = ActiveForm::begin(); ?>
 

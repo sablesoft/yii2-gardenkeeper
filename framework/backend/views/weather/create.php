@@ -3,13 +3,13 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\ClimateSeason */
+/* @var $model common\models\Weather */
 
-$this->title = Yii::t('app', 'Create Climate Season');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Climate Seasons'), 'url' => ['index']];
+$this->title = Yii::t('app', 'Create Weather');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Weather'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="climate-season-create">
+<div class="weather-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

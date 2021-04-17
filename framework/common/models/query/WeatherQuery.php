@@ -3,11 +3,11 @@
 namespace common\models\query;
 
 /**
- * This is the ActiveQuery class for [[\common\models\ClimateSeason]].
+ * This is the ActiveQuery class for [[\common\models\Weather]].
  *
- * @see \common\models\ClimateSeason
+ * @see \common\models\Weather
  */
-class ClimateSeasonQuery extends \yii\db\ActiveQuery
+class WeatherQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class ClimateSeasonQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \common\models\ClimateSeason[]|array
+     * @return \common\models\Weather[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class ClimateSeasonQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \common\models\ClimateSeason|array|null
+     * @return \common\models\Weather|array|null
      */
     public function one($db = null)
     {

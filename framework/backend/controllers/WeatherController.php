@@ -3,16 +3,17 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\ClimateSeason;
-use backend\models\ClimateSeasonSearch;
+use common\models\Weather;
+use backend\models\WeatherSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * ClimateSeasonController implements the CRUD actions for ClimateSeason model.
+ * WeatherController implements the CRUD actions for Weather model.
  */
-class ClimateSeasonController extends Controller
+class WeatherController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -20,6 +21,15 @@ class ClimateSeasonController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -30,12 +40,12 @@ class ClimateSeasonController extends Controller
     }
 
     /**
-     * Lists all ClimateSeason models.
+     * Lists all Weather models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ClimateSeasonSearch();
+        $searchModel = new WeatherSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +55,7 @@ class ClimateSeasonController extends Controller
     }
 
     /**
-     * Displays a single ClimateSeason model.
+     * Displays a single Weather model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -58,13 +68,13 @@ class ClimateSeasonController extends Controller
     }
 
     /**
-     * Creates a new ClimateSeason model.
+     * Creates a new Weather model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new ClimateSeason();
+        $model = new Weather();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -76,7 +86,7 @@ class ClimateSeasonController extends Controller
     }
 
     /**
-     * Updates an existing ClimateSeason model.
+     * Updates an existing Weather model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -96,7 +106,7 @@ class ClimateSeasonController extends Controller
     }
 
     /**
-     * Deletes an existing ClimateSeason model.
+     * Deletes an existing Weather model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -110,15 +120,15 @@ class ClimateSeasonController extends Controller
     }
 
     /**
-     * Finds the ClimateSeason model based on its primary key value.
+     * Finds the Weather model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return ClimateSeason the loaded model
+     * @return Weather the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = ClimateSeason::findOne($id)) !== null) {
+        if (($model = Weather::findOne($id)) !== null) {
             return $model;
         }
 

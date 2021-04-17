@@ -49,12 +49,12 @@ return [
                 ],
 //           '_access' => 'climate.index'
             ],
-            'climate-season' => [
+            'weather' => [
                 '_menu' => [
-                    'label'     => 'Climate Seasons',
-                    'url'       => '/climate-season'
+                    'label'     => 'Weather',
+                    'url'       => '/weather'
                 ],
-//           '_access' => 'climate-season.index'
+//           '_access' => 'weather.index'
             ],
             '_divider'  => true,
             'plant' => [

@@ -3,15 +3,15 @@
 namespace common\fixtures;
 
 use yii\test\ActiveFixture;
-use common\models\ClimateSeason;
+use common\models\Weather;
 
 /**
- * Class ClimateSeasonFixture
+ * Class WeatherFixture
  * @package common\fixtures
  */
-class ClimateSeasonFixture extends ActiveFixture
+class WeatherFixture extends ActiveFixture
 {
-    public $modelClass = ClimateSeason::class;
+    public $modelClass = Weather::class;
     public $depends = [
         SeasonFixture::class,
         ClimateFixture::class

@@ -4,14 +4,14 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\ClimateSeason */
+/* @var $model common\models\Weather */
 
 $this->title = $model->label;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Climate Seasons'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Weather'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="climate-season-view">
+<div class="weather-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
