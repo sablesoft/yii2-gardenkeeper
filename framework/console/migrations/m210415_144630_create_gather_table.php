@@ -21,7 +21,7 @@ class m210415_144630_create_gather_table extends Migration
             'product_id' => $this->integer()->notNull()->comment('Product ID'),
 
             // ключ растения на участке:
-            'garden_id' => $this->integer()->notNull()->comment('Garden ID'),
+            'garden_id' => $this->integer()->null()->comment('Garden ID'),
 
             // собран ли продукт
             // (упавшие сами продукты считаются собранными):
@@ -32,6 +32,9 @@ class m210415_144630_create_gather_table extends Migration
 
             // здоровье данного продукта, проценты:
             'health' => $this->integer()->unsigned()->notNull()->defaultValue(100)->defaultValue(100)->comment('Plant product health'),
+
+            // ценность данного продукта:
+            'value' => $this->integer()->unsigned()->notNull()->comment('Product value'),
 
             'created_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP')
                 ->comment('Creation time'),

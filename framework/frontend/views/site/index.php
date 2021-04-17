@@ -13,44 +13,55 @@ $this->title = Yii::$app->name;
         <h1>Welcome!</h1>
 
         <p class="lead">Garden Keeper v0.1</p>
-
-        <p class="h1">Now is <?= $now->year; ?>-th year, <?= $now->season->name; ?></p>
-
-        <p><?= Html::a('Go to next Season', ['site/wait'], ['class' => 'btn btn-lg btn-success']); ?></p>
+        <p class="h1">Now is <?= $now->season->name; ?>, <?= $now->year; ?>-th year</p>
+        <?php if (!Yii::$app->user->isGuest): ?>
+        <p><?= Html::a('Go to next Season', ['/site/wait'], ['class' => 'btn btn-lg btn-success']); ?></p>
+        <?php else: ?>
+        <p><?= Html::a('Login', ['/login'], ['class' => 'btn btn-lg btn-success']); ?></p>
+        <?php endif; ?>
     </div>
 
     <div class="body-content">
 
         <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+            <div class="col-sm-3">
+                <h2>Gardens</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                <p>Lands: <?= $now->lands; ?></p>
+                <p>Plants: <?= $now->plants; ?></p>
+                <p>Plants Lost: <?= $now->plants_lost; ?></p>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+                <?php if (!Yii::$app->user->isGuest): ?>
+                <p><?= Html::a('Go to Plants', ['/plants'], ['class' => 'btn btn-default']); ?></p>
+                <?php endif; ?>
             </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+            <div class="col-sm-3">
+                <h2>Growing</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                <p>Products Count: <?= $now->products; ?></p>
+                <p>Products Value: <?= $now->products_value; ?></p>
+                <p>Products Lost: <?= $now->products_lost; ?></p>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
+                <?php if (!Yii::$app->user->isGuest): ?>
+                <p><?= Html::a('Go to Growing Products', ['/growing'], ['class' => 'btn btn-default']); ?></p>
+                <?php endif; ?>
             </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+            <div class="col-sm-3">
+                <h2>Stock</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                <p>Products Count: <?= $now->harvested; ?></p>
+                <p>Products Value: <?= $now->harvested_value; ?></p>
+                <p>Products Lost: <?= $now->harvested_lost; ?></p>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+                <?php if (!Yii::$app->user->isGuest): ?>
+                <p><?= Html::a('Go to Stock', ['/stock'], ['class' => 'btn btn-default']); ?></p>
+                <?php endif; ?>
+            </div>
+            <div class="col-sm-3">
+                <h2>Used</h2>
+
+                <p>Products Count: <?= $now->used; ?></p>
+                <p>Products Value: <?= $now->used_value; ?></p>
             </div>
         </div>
 

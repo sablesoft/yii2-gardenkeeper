@@ -2,12 +2,26 @@
 return [
     'adminEmail' => 'admin@gardenkeeper.com',
     'nav'   => [
-        'contact' => [
+        'plants' => [
             '_menu' => [
-                'label'     => 'Contact',
-                'url'       => 'site/contact'
+                'label'     => 'Plants',
+                'url'       => '/plants'
             ],
-           '_access' => '?'
+            '_access' => '@'
+        ],
+        'growing' => [
+            '_menu' => [
+                'label'     => 'Growing',
+                'url'       => '/growing'
+            ],
+            '_access' => '@'
+        ],
+        'stock' => [
+            '_menu' => [
+                'label'     => 'Stock',
+                'url'       => '/stock'
+            ],
+            '_access' => '@'
         ],
         'about'  => [
             '_menu' => [
@@ -15,6 +29,13 @@ return [
                 'url'       => '/site/about'
             ],
            '_access' => '?'
+        ],
+        'contact' => [
+            '_menu' => [
+                'label'     => 'Contact',
+                'url'       => '/site/contact'
+            ],
+            '_access' => '?'
         ],
     ],
 ];

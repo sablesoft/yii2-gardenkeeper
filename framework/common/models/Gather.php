@@ -15,6 +15,7 @@ use common\models\interfaces\ColumnsInterface;
  * @property int $is_harvested Is product harvested
  * @property int $ripeness Plant product ripeness
  * @property int $health Plant product health
+ * @property int $value Plant product value
  * @property string $created_at Creation time
  * @property string $updated_at Last update time
  *
@@ -41,7 +42,7 @@ class Gather extends \yii\db\ActiveRecord implements ColumnsInterface
     public function rules()
     {
         return [
-            [['product_id', 'garden_id'], 'required'],
+            [['product_id', 'land_id'], 'required'],
             [['land_id', 'product_id', 'garden_id', 'is_harvested', 'ripeness', 'health'], 'integer'],
             [['ripeness'], 'default', 'value' => 0],
             [['health'], 'default', 'value' => 100],

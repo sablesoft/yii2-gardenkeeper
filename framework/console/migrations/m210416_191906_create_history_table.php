@@ -18,8 +18,28 @@ class m210416_191906_create_history_table extends Migration
             'year' => $this->integer()->unsigned()->notNull()->comment('Year of history'),
             'season_id' => $this->integer()->notNull()->comment('Year season ID'),
 
-            // todo - дополнительные поля для исторических данных
-            // todo - или дополнительная таблица для исторических данных по каждому участку
+            'lands' => $this->integer()->unsigned()->notNull()->defaultValue(0)
+                ->comment('Total lands count'),
+            'plants' => $this->integer()->unsigned()->notNull()->defaultValue(0)
+                ->comment('Total growing plants count'),
+            'plants_lost' => $this->integer()->unsigned()->notNull()->defaultValue(0)
+                ->comment('Total plants lost'),
+            'products' => $this->integer()->unsigned()->notNull()->defaultValue(0)
+                ->comment('Total growing products count'),
+            'products_value' => $this->integer()->unsigned()->notNull()->defaultValue(0)
+                ->comment('Total products value'),
+            'products_lost' => $this->integer()->unsigned()->notNull()->defaultValue(0)
+                ->comment('Total products lost'),
+            'harvested' => $this->integer()->unsigned()->notNull()->defaultValue(0)
+                ->comment('Total harvested products count'),
+            'harvested_value' => $this->integer()->unsigned()->notNull()->defaultValue(0)
+                ->comment('Total harvested products value'),
+            'harvested_lost' => $this->integer()->unsigned()->notNull()->defaultValue(0)
+                ->comment('Total harvested products lost'),
+            'used' => $this->integer()->unsigned()->notNull()->defaultValue(0)
+                ->comment('Total used products count'),
+            'used_value' => $this->integer()->unsigned()->notNull()->defaultValue(0)
+                ->comment('Total used products value'),
 
             'created_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP')
                 ->comment('Creation time'),

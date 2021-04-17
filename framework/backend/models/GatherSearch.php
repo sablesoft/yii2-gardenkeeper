@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use common\helpers\AreaHelper;
 use common\models\Garden;
 use common\models\Land;
 use common\models\Product;
@@ -20,7 +21,8 @@ class GatherSearch extends Gather
     public function rules()
     {
         return [
-            [['id', 'land_id', 'product_id', 'garden_id', 'is_harvested', 'ripeness', 'health'], 'integer'],
+            [['id', 'land_id', 'product_id', 'garden_id', 'is_harvested',
+                'ripeness', 'health', 'value'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
         ];
     }
@@ -39,7 +41,7 @@ class GatherSearch extends Gather
      */
     public function getColumns(): array
     {
-        return [
+        $columns = [
             ['class' => 'yii\grid\SerialColumn'],
 
 //            'id',
@@ -68,24 +70,33 @@ class GatherSearch extends Gather
                 },
                 'filter' => Product::getDropDownList()[0]
             ],
-
-            'is_harvested:boolean',
-            'ripeness',
-            'health',
-
-            [
-                'attribute' => 'created_at',
-                'format' => 'datetime',
-                'filter' => false
-            ],
-            [
-                'attribute' => 'updated_at',
-                'format' => 'datetime',
-                'filter' => false
-            ],
-
-            ['class' => 'yii\grid\ActionColumn'],
         ];
+
+        if (!AreaHelper::isFrontend()) {
+            $columns[] = 'is_harvested:boolean';
+        }
+
+        $columns[] = 'ripeness';
+        $columns[] = 'health';
+        $columns[] = 'value';
+
+        if (!AreaHelper::isFrontend()) {
+            $columns = array_merge($columns, [
+                [
+                    'attribute' => 'created_at',
+                    'format' => 'datetime',
+                    'filter' => false
+                ],
+                [
+                    'attribute' => 'updated_at',
+                    'format' => 'datetime',
+                    'filter' => false
+                ],
+                ['class' => 'yii\grid\ActionColumn']
+            ]);
+        }
+
+        return $columns;
     }
 
     /**
