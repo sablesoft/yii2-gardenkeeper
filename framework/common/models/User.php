@@ -26,6 +26,7 @@ use common\models\traits\DropDownTrait;
  * @property string $password write-only password
  * @property-read array $statusMap
  * @property-read string $statusLabel
+ * @property Land[]|null $lands
  */
 class User extends ActiveRecord implements IdentityInterface, ColumnsInterface
 {
@@ -78,6 +79,14 @@ class User extends ActiveRecord implements IdentityInterface, ColumnsInterface
         }
 
         return $map[$this->status];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLands()
+    {
+        return $this->hasMany(Land::class, ['user_id' => 'id']);
     }
 
     /**

@@ -103,6 +103,28 @@ class Plant extends \yii\db\ActiveRecord implements ColumnsInterface
     }
 
     /**
+     * @param Weather $weather
+     * @return int
+     */
+    public function checkWeather(Weather $weather): int
+    {
+        $diff = 0;
+        foreach (['temperature', 'humidity', 'precipitation', 'sunshine', 'wind'] as $mark) {
+            $maxMark = "${mark}_max";
+            $minMark = "${mark}_min";
+            if ($weather->$mark < $this->$minMark || $weather->$mark > $this->$maxMark) {
+                Yii::info("Bad weather for plant " . $this->name . ": " . $mark, 'debug');
+                $diff -= 60;
+            } else {
+                Yii::info("Good weather for plant " . $this->name . ": " . $mark, 'debug');
+                $diff += 5;
+            }
+        }
+
+        return $diff;
+    }
+
+    /**
      * Gets query for [[Gardens]].
      *
      * @return \yii\db\ActiveQuery|\common\models\query\GardenQuery

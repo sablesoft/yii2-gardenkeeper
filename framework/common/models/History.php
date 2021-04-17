@@ -87,12 +87,22 @@ class History extends \yii\db\ActiveRecord
     public function getNext(): self
     {
         $year = $this->year;
-        $nextSeason = $this->season->getNextSeason();
+        $nextSeason = $this->season->nextSeason;
         if ($nextSeason->order < $this->season->order) {
             $year++;
         }
 
-        return new self(['year' => $year, 'season_id' => $nextSeason->id]);
+        $attributes = $this->getAttributes([
+            'lands', 'plants', 'plants_lost',
+            'products', 'products_value', 'products_lost',
+            'harvested', 'harvested_value', 'harvested_lost',
+            'used', 'used_value'
+        ]);
+
+        return new self(array_merge($attributes, [
+            'year' => $year,
+            'season_id' => $nextSeason->id
+        ]));
     }
 
     /**
@@ -113,9 +123,9 @@ class History extends \yii\db\ActiveRecord
         $this->lands = Land::find()->count();
         $this->plants = Garden::find()->count();
         $this->products = Gather::find()->where(['!=', 'is_harvested', 1])->count();
-        $this->products_value = Gather::find()->where(['!=', 'is_harvested', 1])->sum('value');
+        $this->products_value = Gather::find()->where(['!=', 'is_harvested', 1])->sum('value') ?: 0;
         $this->harvested = Gather::find()->where(['=', 'is_harvested', 1])->count();
-        $this->harvested_value = Gather::find()->where(['=', 'is_harvested', 1])->sum('value');
+        $this->harvested_value = Gather::find()->where(['=', 'is_harvested', 1])->sum('value') ?: 0;
 
         return $this;
     }
@@ -148,5 +158,40 @@ class History extends \yii\db\ActiveRecord
         self::$now = $now;
 
         return $now;
+    }
+
+    /**
+     * @return bool
+     */
+    public static function isNewYear(): bool
+    {
+        $now = self::findNow();
+        $isNewYear = $now->next->year - $now->year;
+
+        return (bool) $isNewYear;
+    }
+
+    /**
+     * @throws \Throwable
+     */
+    public static function wait(): void
+    {
+        Yii::info("NEW SEASON!", 'debug');
+        $plants = Garden::find()->all();
+        foreach ($plants as $plant) {
+            $plant->live();
+        }
+
+        $stock = Gather::find()->where(['=', 'is_harvested', 1])->all();
+        foreach ($stock as $item) {
+            $item->growth();
+        }
+
+        $now = self::findNow();
+        $now->prepareStatistic()->save();
+
+        $next = $now->next;
+        $next->prepareStatistic()->save();
+        self::$now = $next;
     }
 }

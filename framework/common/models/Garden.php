@@ -2,8 +2,9 @@
 
 namespace common\models;
 
-use common\models\traits\DropDownTrait;
 use Yii;
+use common\models\traits\HealthTrait;
+use common\models\traits\DropDownTrait;
 use common\models\interfaces\ColumnsInterface;
 
 /**
@@ -27,7 +28,7 @@ use common\models\interfaces\ColumnsInterface;
  */
 class Garden extends \yii\db\ActiveRecord implements ColumnsInterface
 {
-    use DropDownTrait;
+    use DropDownTrait, HealthTrait;
 
     /**
      * {@inheritdoc}
@@ -85,6 +86,105 @@ class Garden extends \yii\db\ActiveRecord implements ColumnsInterface
             'created_at:datetime',
             'updated_at:datetime',
         ];
+    }
+
+    /**
+     * @return $this
+     * @throws \Throwable
+     */
+    public function live(): self
+    {
+        $climateId = $this->land->climate_id;
+        $now = History::findNow();
+        $seasonId = $now->season_id;
+
+        $weather = Weather::findOne([
+            'climate_id' => $climateId,
+            'season_id' => $seasonId
+        ]);
+
+        $healthDiff = $this->plant->checkWeather($weather);
+
+        $this->growth($healthDiff);
+        if (!$this->die()) {
+            $this->save();
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param int $healthDiff
+     * @return $this
+     */
+    protected function growth(int $healthDiff): self
+    {
+        Yii::info("Plant " . $this->label . " is growing...", 'debug');
+        if (History::isNewYear()) {
+            $this->age++;
+            Yii::info("New age: " . $this->age, 'debug');
+        }
+        $phase = $this->age * 100 / $this->plant->lifespan;
+        Yii::info("Plant live phase: " . $phase, 'debug');
+        switch ($phase) {
+            case 0:
+                Yii::info("Phase - initial", 'debug');
+                $healthDiff += 10;
+                break;
+            case ($phase < 30):
+                Yii::info("Phase < 30%", 'debug');
+                $healthDiff += 10;
+                break;
+            case ($phase < 50):
+                Yii::info("Phase < 50%", 'debug');
+                $healthDiff += 5;
+                break;
+                // после 50 процентов возраста - дряхление:
+            case ($phase < 60):
+                Yii::info("Phase < 60%", 'debug');
+                break;
+            case ($phase < 70):
+                Yii::info("Phase < 70%", 'debug');
+                $healthDiff -= 5;
+                break;
+            case ($phase < 90):
+                Yii::info("Phase < 90%", 'debug');
+                $healthDiff -= 10;
+                break;
+            default:
+                Yii::info("Phase > 90%", 'debug');
+                $healthDiff -= 20;
+        }
+        Yii::info("Plant health diff: " . $healthDiff, 'debug');
+        $this->updateHealth($healthDiff);
+        foreach ($this->gathers as $growing) {
+            $growing->growth($healthDiff);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     * @throws \Throwable
+     */
+    protected function die(): bool
+    {
+        if (!$this->health) {
+            $now = History::findNow();
+            foreach ($this->gathers as $growing) {
+                if (!$growing->drop()) {
+                    $now->products_lost++;
+                    $growing->delete();
+                }
+            }
+            $now->plants_lost++;
+            $this->delete();
+
+            return true;
+        }
+
+        return false;
     }
 
     /**

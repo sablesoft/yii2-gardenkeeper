@@ -15,6 +15,7 @@ use common\models\interfaces\ColumnsInterface;
  * @property string $created_at Creation time
  * @property string $updated_at Last update time
  *
+ * @property-read Season $nextSeason
  * @property Weather[] $weathers
  * @property Climate[] $climates
  * @property Product[] $products
